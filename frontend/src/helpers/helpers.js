@@ -74,6 +74,9 @@ const deleteRequest = (path, token) => {
     });
 };
 
+// User Auth
+// Managing user authentication and authorisation
+
 export const postRegister = (body, token) => {
   return postRequest('/user/auth/register', body, token)
 };
@@ -86,6 +89,9 @@ export const postLogout = (body, token) => {
   return postRequest('/user/auth/logout', body, token)
 };
 
+// Listing Management
+// Managing listings
+
 export const getListings = (token) => {
   return getRequest('/listings', token)
 };
@@ -95,25 +101,35 @@ export const postNewListing = (body, token) => {
 };
 
 export const getListingFromId = (listingId, token) => {
-  return getRequest('/listings/' + listingId, token)
+  const path = '/listings/' + listingId
+  return getRequest(path, token)
 };
 
 export const putUpdateListing = (listingId, body, token) => {
-  return putRequest('/listings/' + listingId, body, token)
+  const path = '/listings/' + listingId
+  return putRequest(path, body, token)
 }
 
 export const deleteListing = (listingId, token) => {
-  return deleteRequest('/listings/' + listingId, token)
+  const path = '/listings/' + listingId
+  return deleteRequest(path, token)
 };
 
 export const putPublishListing = (listingId, body, token) => {
-  return putRequest('/listings/publish/' + listingId, body, token)
+  const path = '/listings/publish/' + listingId
+  return putRequest(path, body, token)
 }
 
 export const putUnpublishListing = (listingId, token) => {
-  return putRequest('/listings/unpublish/' + listingId, {}, token)
+  const path = '/listings/unpublish/' + listingId
+  const body = {}
+  return putRequest(path, body, token)
 }
 
 export const putListingReview = (listingId, bookingId, body, token) => {
-  return putRequest('/listings/' + listingId + '/review/' + bookingId, body, token)
+  const path = '/listings/' + listingId + '/review/' + bookingId
+  return putRequest(path, body, token)
 }
+
+// Booking Management
+// Managing bookings
