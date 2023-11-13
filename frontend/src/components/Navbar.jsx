@@ -1,40 +1,30 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import config from '../config.json';
+
 import Button from '../components/Button';
 import WhiteButton from '../components/WhiteButton';
 import airbnbLogo from '../assets/airbnb-logo.jpg';
+import houseLogo from '../assets/house.svg';
 
-const BACKEND_PORT = config.BACKEND_PORT;
+import { postLogoutUser } from '../helpers/helpers';
 
-function Navbar () {
-  const navigate = useNavigate();
-
+const Navbar = () => {
   function isLoggedIn () {
     return localStorage.getItem('token') !== null;
   }
 
-  const logout = async () => {
-    try {
-      const response = await fetch(`http://localhost:${BACKEND_PORT}/user/auth/logout`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json',
-        },
-      });
+  const navigate = useNavigate();
 
-      if (response.status === 200) {
-        localStorage.removeItem('token');
-        navigate('/');
-      }
-    } catch (error) {
-      console.log(error);
+  const logout = async () => {
+    const response = await postLogoutUser();
+    if (response.status === 200) {
+      localStorage.removeItem('token');
+      navigate('/');
     }
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 flex flex-row justify-between items-center text-sm px-20 py-6 border border-b-black/10 bg-white z-50">
+    <div className="fixed top-0 left-0 right-0 flex flex-row justify-between items-center text-sm px-20 py-6 border border-b-black/10 bg-white z-40">
       <Link to="/">
         <img className="w-24" src={airbnbLogo} alt="Airbnb Logo" />
       </Link>
@@ -42,6 +32,13 @@ function Navbar () {
         {isLoggedIn()
           ? (
           <>
+            <div className='flex flex-col w-[38px]'>
+              <button
+                className='rounded-md p-2 bg-white text-[#FE375B] border border-[#FE375B] hover:bg-[#ffe1e6] transition-all duration-300'
+                onClick={() => navigate('/listings')}>
+                <img src={houseLogo} alt='Hosted Bookings Logo' />
+              </button>
+            </div>
             <div className='flex flex-col w-24'>
               <Button label="Logout" onClick={logout} />
             </div>
