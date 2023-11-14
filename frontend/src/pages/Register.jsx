@@ -7,6 +7,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import airbnbCover from '../assets/airbnb-cover.jpg';
 
 import { postRegisterUser } from '../helpers/helpers';
+import { useContext, Context } from '../helpers/context';
 
 const Register = () => {
   const [email, setEmail] = React.useState('');
@@ -14,7 +15,7 @@ const Register = () => {
   const [reenteredPassword, setReenteredPassword] = React.useState('');
   const [name, setName] = React.useState('');
   const [error, setError] = React.useState('');
-
+  const { setters } = useContext(Context);
   const navigate = useNavigate();
 
   const register = async () => {
@@ -29,6 +30,7 @@ const Register = () => {
       setError(data.error);
     } else if (data.token) {
       localStorage.setItem('token', data.token);
+      setters.setUserEmail(email);
       navigate('/');
     }
   };

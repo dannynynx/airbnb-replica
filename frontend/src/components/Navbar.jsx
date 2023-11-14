@@ -7,18 +7,20 @@ import airbnbLogo from '../assets/airbnb-logo.jpg';
 import houseLogo from '../assets/house.svg';
 
 import { postLogoutUser } from '../helpers/helpers';
+import { useContext, Context } from '../helpers/context';
 
 const Navbar = () => {
   function isLoggedIn () {
     return localStorage.getItem('token') !== null;
   }
-
+  const { setters } = useContext(Context);
   const navigate = useNavigate();
 
   const logout = async () => {
     const response = await postLogoutUser();
     if (response.status === 200) {
       localStorage.removeItem('token');
+      setters.setUserEmail(null);
       navigate('/');
     }
   };
@@ -35,7 +37,7 @@ const Navbar = () => {
             <div className='flex flex-col w-[38px]'>
               <button
                 className='rounded-md p-2 bg-white text-[#FE375B] border border-[#FE375B] hover:bg-[#ffe1e6] transition-all duration-300'
-                onClick={() => navigate('/listings')}>
+                onClick={() => navigate('/my-listings')}>
                 <img src={houseLogo} alt='Hosted Bookings Logo' />
               </button>
             </div>

@@ -3,26 +3,27 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '../components/Button';
 import Input from '../components/Input';
-import ImageUpload from '../components/ImageUpload';
 import ErrorMessage from '../components/ErrorMessage';
 import airbnbCover from '../assets/airbnb-cover.jpg';
 
 import { postLoginUser } from '../helpers/helpers';
+import { useContext, Context } from '../helpers/context';
 
 const Login = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
-
+  const { setters } = useContext(Context);
   const navigate = useNavigate();
 
   const login = async () => {
-    const body = { email, password }
+    const body = { email, password };
     const data = await postLoginUser(body);
     if (data.error) {
       setError(data.error);
     } else if (data.token) {
       localStorage.setItem('token', data.token);
+      setters.setUserEmail(email);
       navigate('/');
     }
   };
@@ -36,7 +37,6 @@ const Login = () => {
             <hr />
             <Input id="Email" type="email" setId={setEmail} />
             <Input id="Password" type="password" setId={setPassword} />
-            <ImageUpload/>
             <hr className="my-1" />
             {error && <ErrorMessage message={error} />}
             <Button label="LOGIN" onClick={login} />

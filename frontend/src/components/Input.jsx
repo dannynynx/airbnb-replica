@@ -12,6 +12,7 @@ const Input = ({ id, type, setId }) => {
           id={id}
           type={type}
           onChange={e => setId(e.target.value)}
+          required
         />
       </div>
     </div>

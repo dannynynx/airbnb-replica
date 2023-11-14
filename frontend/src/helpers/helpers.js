@@ -110,3 +110,37 @@ export const getListing = async (listingId) => {
     console.log(error);
   }
 };
+
+export const deleteDeleteListing = async (token, listingId) => {
+  try {
+    const response = await fetch(`http://localhost:${BACKEND_PORT}/listings/${listingId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// HELPERS
+
+export function fileToDataUrl (file) {
+  const validFileTypes = ['image/jpeg', 'image/png', 'image/jpg']
+  const valid = validFileTypes.find(type => type === file.type)
+  if (!valid) {
+    throw Error('Provided file is not a png, jpg or jpeg image.')
+  }
+
+  const reader = new FileReader()
+  const dataUrlPromise = new Promise((resolve, reject) => {
+    reader.onerror = reject
+    reader.onload = () => resolve(reader.result)
+  })
+  reader.readAsDataURL(file)
+  return dataUrlPromise
+}
