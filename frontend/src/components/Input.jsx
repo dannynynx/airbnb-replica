@@ -13,6 +13,7 @@ const Input = ({ id, type, setId, value }) => {
           type={type}
           onChange={e => setId(e.target.value)}
           value={value}
+          maxLength='35'
         />
       </div>
     </div>

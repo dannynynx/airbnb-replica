@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
+import Landing from './pages/Landing';
 import Register from './pages/Register';
 import HostedListings from './pages/HostedListings';
 import EditListing from './pages/EditListing';
@@ -23,6 +24,7 @@ function App () {
         <Context.Provider value={{ getters, setters }}>
           <Navbar />
           <Routes>
+            <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/my-listings" element={<HostedListings />} />

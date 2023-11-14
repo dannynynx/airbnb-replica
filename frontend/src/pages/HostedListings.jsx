@@ -178,13 +178,13 @@ const HostedListings = () => {
                 </button>
               </div>
             </div>
-            <hr />
+            <hr/>
             <div className='grid grid-cols-2 gap-4'>
               <Input id='Title' type='text' setId={setTitle} />
               <Input id='Street' type='text' setId={setStreet} />
-              <Input id='Price' type='text' setId={setPrice} />
-              <Input id='City' type='text' setId={setCity} />
               <Input id='Property Type' type='text' setId={setPropertyType} />
+              <Input id='City' type='text' setId={setCity} />
+              <Input id='Price (per night)' type='text' setId={setPrice} />
               <Input id='State' type='text' setId={setState} />
               <Input id='Amenities' type='text' setId={setAmenities} />
               <Input id='Postcode' type='text' setId={setPostcode} />

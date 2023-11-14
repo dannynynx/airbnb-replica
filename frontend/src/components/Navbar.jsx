@@ -26,7 +26,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 flex flex-row justify-between items-center text-sm px-20 py-6 border border-b-black/10 bg-white z-40">
+    <div className="fixed top-0 left-0 right-0 flex flex-row justify-between items-center text-sm px-20 py-6 border-2 border-b-black/10 bg-white z-40">
       <Link to="/">
         <img className="w-24" src={airbnbLogo} alt="Airbnb Logo" />
       </Link>

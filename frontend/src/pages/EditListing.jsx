@@ -101,13 +101,13 @@ const EditListing = () => {
 
   return (
     <div className='flex flex-col mt-[88px] px-20 py-8 gap-2'>
-      <b className='text-3xl pb-6'>Edit listing</b>
+      <b className='text-3xl pb-6'>Edit Listing</b>
       <div className='grid grid-cols-2 gap-4'>
         <Input id='Title' type='text' setId={setTitle} value={title}/>
         <Input id='Street' type='text' setId={setStreet} value={street}/>
-        <Input id='Price' type='text' setId={setPrice} value={price}/>
-        <Input id='City' type='text' setId={setCity} value={city}/>
         <Input id='Property Type' type='text' setId={setPropertyType} value={propertyType}/>
+        <Input id='City' type='text' setId={setCity} value={city}/>
+        <Input id='Price' type='text' setId={setPrice} value={price}/>
         <Input id='State' type='text' setId={setState} value={state}/>
         <Input id='Amenities' type='text' setId={setAmenities} value={amenities}/>
         <Input id='Postcode' type='text' setId={setPostcode} value={postcode}/>
