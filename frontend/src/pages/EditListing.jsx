@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -10,8 +11,9 @@ import x from '../assets/x.svg';
 import { postNewListing, getAllListings, getListing } from '../helpers/helpers';
 import { useContext, Context } from '../helpers/context';
 
-const HostedListings = () => {
+const EditListing = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { id } = useParams();
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -129,6 +131,7 @@ const HostedListings = () => {
       if (data.error) {
         console.error(data.error);
       } else {
+        console.log(id);
         const userOwnedListings = data.listings.filter(listing => listing.owner === getters.userEmail);
         const userOwnedListingsWithData = await Promise.all(
           userOwnedListings.map(async (listing) => {
@@ -148,7 +151,7 @@ const HostedListings = () => {
   return (
     <div className='flex flex-col mt-[88px] px-20 py-8 gap-8'>
       <div className='flex flex-row justify-between'>
-        <b className='text-3xl'>Your Hosted Listings</b>
+        <b className='text-3xl'>EDIT LISTING ID {id}</b>
         <div className='flex flex-col w-36'>
           <Button label='+ Create Listing' onClick={openModal} />
         </div>
@@ -208,4 +211,4 @@ const HostedListings = () => {
   );
 };
 
-export default HostedListings;
+export default EditListing;

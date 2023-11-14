@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import beds from '../assets/beds.svg';
 import bathroom from '../assets/bathroom.svg';
@@ -9,6 +10,7 @@ import { deleteDeleteListing } from '../helpers/helpers';
 
 const HostedListingsCard = ({ listing, refresh, openEditModal }) => {
   const token = localStorage.getItem('token');
+  const navigate = useNavigate();
 
   const deleteListing = async () => {
     const data = await deleteDeleteListing(token, listing.id);
@@ -41,12 +43,11 @@ const HostedListingsCard = ({ listing, refresh, openEditModal }) => {
               </button>
             </div>
             <div className='flex flex-col w-[38px]'>
-              {/* Edit Button */}
-              <button
-                className='rounded-md p-2 bg-[#FE375B] text-white border border-[#FE375B] hover:bg-[#D52E49] transition-all duration-300'
-                onClick={() => openEditModal(listing)}>
-                <img src={editIcon} alt='Edit Icon' />
-              </button>
+                <button
+                  className='rounded-md p-2 bg-[#FE375B] text-white border border-[#FE375B] hover:bg-[#D52E49] transition-all duration-300'
+                  onClick={() => navigate(`/my-listings/${listing.id}`)}>
+                  <img src={editIcon} alt='Edit Icon' />
+                </button>
             </div>
           </div>
         </div>
