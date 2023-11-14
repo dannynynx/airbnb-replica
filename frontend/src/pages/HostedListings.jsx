@@ -133,8 +133,8 @@ const HostedListings = () => {
         const userOwnedListingsWithData = await Promise.all(
           userOwnedListings.map(async (listing) => {
             const userOwnedListingData = await getListing(listing.id);
+            console.log(userOwnedListingData);
             const userOwnedListingWithId = { ...userOwnedListingData.listing, id: listing.id };
-            console.log(userOwnedListingWithId);
             return userOwnedListingWithId;
           })
         );
@@ -193,7 +193,12 @@ const HostedListings = () => {
               <Input id='Bed(s)' type='text' setId={setBeds} />
               <Input id='Bedroom(s)' type='text' setId={setBedrooms} />
             </div>
-            <ImageUpload onImageUpload={setThumbnail} />
+            <div className='flex flex-col pt-1'>
+              <p>
+                Thumbnail <span className="text-red-500">*</span>
+              </p>
+              <ImageUpload onImageUpload={setThumbnail} />
+            </div>
             <hr className='my-1' />
             {error && (
               <div className='bg-red-100 px-4 py-2 text-sm rounded-md'>

@@ -111,6 +111,23 @@ export const getListing = async (listingId) => {
   }
 };
 
+export const putUpdateListing = async (token, listingId, body) => {
+  try {
+    const response = await fetch(`http://localhost:${BACKEND_PORT}/listings/${listingId}`, {
+      method: 'PUT',
+      body: JSON.stringify(body),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const deleteDeleteListing = async (token, listingId) => {
   try {
     const response = await fetch(`http://localhost:${BACKEND_PORT}/listings/${listingId}`, {

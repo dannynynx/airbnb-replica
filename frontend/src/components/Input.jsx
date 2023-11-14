@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Input = ({ id, type, setId }) => {
+const Input = ({ id, type, setId, value }) => {
   return (
     <div className='flex flex-col gap-2'>
       <p>
@@ -12,7 +12,7 @@ const Input = ({ id, type, setId }) => {
           id={id}
           type={type}
           onChange={e => setId(e.target.value)}
-          required
+          value={value}
         />
       </div>
     </div>
