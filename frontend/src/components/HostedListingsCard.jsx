@@ -8,7 +8,7 @@ import deleteIcon from '../assets/trash.svg';
 
 import { deleteDeleteListing } from '../helpers/helpers';
 
-const HostedListingsCard = ({ listing, refresh, openEditModal }) => {
+const HostedListingsCard = ({ listing, refresh }) => {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ const HostedListingsCard = ({ listing, refresh, openEditModal }) => {
   };
 
   return (
-    <div className='flex flex-row border-2 p-4 gap-4 rounded-lg items-center'>
+    <div className='flex flex-row border-2 border-black/10 p-4 gap-4 rounded-lg items-center'>
       <img
         src={listing.thumbnail}
         alt={`${listing.title} Thumbnail`}
@@ -31,8 +31,8 @@ const HostedListingsCard = ({ listing, refresh, openEditModal }) => {
       <div className='flex flex-col gap-4 grow justify-center'>
         <div className='flex flex-row justify-between'>
           <div className='flex flex-col'>
-            <i>{listing.metadata.propertyType}</i>
             <h2 className='text-2xl font-bold'>{listing.title}</h2>
+            <i>{listing.metadata.propertyType}</i>
           </div>
           <div className='flex flex-row gap-2'>
             <div className='flex flex-col w-[38px]'>

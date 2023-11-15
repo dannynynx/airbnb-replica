@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import ErrorMessage from '../components/ErrorMessage';
-import airbnbCover from '../assets/airbnb-cover.jpg';
 
 import { postRegisterUser } from '../helpers/helpers';
 import { useContext, Context } from '../helpers/context';
@@ -52,7 +51,6 @@ const Register = () => {
           </div>
         </div>
       </div>
-      <img className="fixed inset-0 w-full h-full object-cover" src={airbnbCover} alt="Airbnb Photo" />
     </>
   );
 }
