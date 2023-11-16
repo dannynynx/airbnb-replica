@@ -144,6 +144,23 @@ export const deleteDeleteListing = async (token, listingId) => {
   }
 };
 
+export const putUpdateListingAvails = async (token, listingId, body) => {
+  try {
+    const response = await fetch(`http://localhost:${BACKEND_PORT}/listings/publish/${listingId}`, {
+      method: 'PUT',
+      body: JSON.stringify(body),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // HELPERS
 
 export function fileToDataUrl (file) {
