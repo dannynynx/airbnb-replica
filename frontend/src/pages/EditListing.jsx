@@ -27,8 +27,6 @@ const EditListing = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('token');
-
   useEffect(() => {
     const fetchListingInfo = async () => {
       try {
@@ -88,7 +86,7 @@ const EditListing = () => {
     };
 
     try {
-      const data = await putUpdateListing(token, id, body);
+      const data = await putUpdateListing(id, body);
       if (data.error) {
         console.log(data.error);
       } else {

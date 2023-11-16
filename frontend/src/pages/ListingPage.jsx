@@ -3,9 +3,12 @@ import { useParams } from 'react-router-dom';
 
 import Button from '../components/Button';
 import Input from '../components/Input';
+import ErrorMessage from '../components/ErrorMessage';
+
 import x from '../assets/x.svg';
 
-import { getListing } from '../helpers/helpers';
+import { getListing, postNewBooking, getAllBookings } from '../helpers/helpers';
+import { useContext, Context } from '../helpers/context';
 
 const ListingPage = () => {
   const [listingInfo, setListingInfo] = useState(null);
@@ -13,9 +16,13 @@ const ListingPage = () => {
   const [isIfLoggedOpen, setIsIfLoggedOpen] = useState(false);
   const [reservedStartDate, setReservedStartDate] = useState(null);
   const [reservedEndDate, setReservedEndDate] = useState(null);
+  const [isConfirmationScreenOpen, setIsConfirmationScreenOpen] = useState(false);
+  const [bookings, setBookings] = useState(null);
+  const { getters } = useContext(Context);
   console.log(listingInfo);
   const { id } = useParams();
   // const navigate = useNavigate();
+  const [error, setError] = React.useState('');
 
   const token = localStorage.getItem('token');
 
@@ -25,6 +32,14 @@ const ListingPage = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const openConfirmationScreen = () => {
+    setIsConfirmationScreenOpen(true);
+  };
+
+  const closeConfirmationScreen = () => {
+    setIsConfirmationScreenOpen(false);
   };
 
   const openIfLogged = () => {
@@ -50,6 +65,24 @@ const ListingPage = () => {
     };
 
     fetchListingInfo();
+
+    const allBookings = async () => {
+      try {
+        const data = await getAllBookings();
+        if (data.error) {
+          console.error(data.error);
+        } else {
+          const userOwnedBookings = data.bookings.filter(booking => booking.owner === getters.userEmail);
+          setBookings(userOwnedBookings);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    allBookings();
+    console.log('checking bookings')
+    console.log(bookings)
   }, [id]);
 
   if (!listingInfo) {
@@ -66,9 +99,48 @@ const ListingPage = () => {
   };
 
   const addReservation = () => {
+    if (!reservedStartDate) {
+      setError('A valid start date is required in order to make a booking');
+      return
+    }
+    if (!reservedEndDate) {
+      setError('A valid end date is required in order to make a booking');
+      return
+    }
     if (reservedStartDate && reservedEndDate) {
-      // not sure how to add this section
-      console.log('checking')
+      if (reservedStartDate < reservedEndDate) {
+        const range = { start: reservedStartDate, end: reservedEndDate }
+        const start = new Date(reservedStartDate)
+        const end = new Date(reservedEndDate)
+        const nights = Math.round((end.getTime() - start.getTime()) / (1000 * 3600 * 24));
+        const price = nights * listingInfo.price;
+        console.log(price)
+
+        postBooking(range, price);
+      } else {
+        setError('Start date is after end date');
+      }
+    }
+  };
+
+  const postBooking = async (range, price) => {
+    const body = {
+      dateRange: range,
+      totalPrice: price,
+    };
+    console.log(body)
+    try {
+      const data = await postNewBooking(id, body);
+      if (data.error) {
+        setError(data.error)
+        console.log(data.error);
+      } else {
+        setError('');
+        closeModal();
+        openConfirmationScreen();
+      }
+    } catch (error) {
+      console.error('Error Booking:', error);
     }
   };
 
@@ -114,9 +186,10 @@ const ListingPage = () => {
             </div>
             <hr/>
             <div className='grid grid-cols-2 gap-4'>
-                <Input id='Start Date (YYYY-MM-DD)' type='text' setId={setReservedStartDate} />
-                <Input id='End Date (YYYY-MM-DD)' type='text' setId={setReservedEndDate}/>
+                <Input id='Start Date' type='date' setId={setReservedStartDate} />
+                <Input id='End Date' type='date' setId={setReservedEndDate}/>
             </div>
+            {error && <ErrorMessage message={error} />}
             <hr className='my-1' />
             <Button label="Add Reservation" onClick={addReservation} />
           </div>
@@ -131,14 +204,32 @@ const ListingPage = () => {
                 <b className='text-center text-base'>Please Log-in before reserving</b>
               </div>
               <div className='flex flex-1 justify-end'>
+              </div>
+            </div>
+            <Button label="Close" onClick={closeIfLogged} />
+          </div>
+        </div>
+      )}
+      {isConfirmationScreenOpen && (
+        <div className='fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm'>
+          <div className='flex flex-col px-6 py-4 w-[56rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm'>
+            <div className='flex flex-row'>
+              <div className='flex flex-1'/>
+              <div className='flex justify-items-center items-center'>
+                <b className='text-center text-base'>Booking Complete</b>
+              </div>
+              <div className='flex flex-1 justify-end'>
                 <button
                   className='grid rounded-md w-6 h-6 bg-white text-[#FE375B] border border-[#FE375B] hover:bg-[#ffe1e6] place-items-center transition-all duration-300'
-                  onClick={closeIfLogged}>
+                  onClick={closeConfirmationScreen}>
                   <img className='w-4/5 h-4/5' src={x} alt='Close Button' />
                 </button>
               </div>
             </div>
-            <Button label="Close" onClick={closeIfLogged} />
+            <div className='grid grid-cols-2 gap-4'>
+              <p>Booking is now accepted, and is currently under review</p>
+            </div>
+            <Button label="Close" onClick={closeConfirmationScreen} />
           </div>
         </div>
       )}

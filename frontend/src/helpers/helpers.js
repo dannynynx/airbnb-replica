@@ -111,13 +111,13 @@ export const getListing = async (listingId) => {
   }
 };
 
-export const putUpdateListing = async (token, listingId, body) => {
+export const putUpdateListing = async (listingId, body) => {
   try {
     const response = await fetch(`http://localhost:${BACKEND_PORT}/listings/${listingId}`, {
       method: 'PUT',
       body: JSON.stringify(body),
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json',
       },
     });
@@ -128,12 +128,12 @@ export const putUpdateListing = async (token, listingId, body) => {
   }
 };
 
-export const deleteDeleteListing = async (token, listingId) => {
+export const deleteDeleteListing = async (listingId) => {
   try {
     const response = await fetch(`http://localhost:${BACKEND_PORT}/listings/${listingId}`, {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json',
       },
     });
@@ -144,13 +144,47 @@ export const deleteDeleteListing = async (token, listingId) => {
   }
 };
 
-export const putUpdateListingAvails = async (token, listingId, body) => {
+export const putUpdateListingAvails = async (listingId, body) => {
   try {
     const response = await fetch(`http://localhost:${BACKEND_PORT}/listings/publish/${listingId}`, {
       method: 'PUT',
       body: JSON.stringify(body),
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// BOOKING
+export const getAllBookings = async () => {
+  try {
+    const response = await fetch(`http://localhost:${BACKEND_PORT}/bookings`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const postNewBooking = async (listingId, body) => {
+  try {
+    const response = await fetch(`http://localhost:${BACKEND_PORT}/bookings/new/${listingId}`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json',
       },
     });

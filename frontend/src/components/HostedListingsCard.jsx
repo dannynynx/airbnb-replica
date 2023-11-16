@@ -14,7 +14,6 @@ import ErrorMessage from '../components/ErrorMessage';
 import { deleteDeleteListing, putUpdateListingAvails } from '../helpers/helpers';
 
 const HostedListingsCard = ({ listing, refresh }) => {
-  const token = localStorage.getItem('token');
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,7 +63,7 @@ const HostedListingsCard = ({ listing, refresh }) => {
   };
 
   const deleteListing = async () => {
-    const data = await deleteDeleteListing(token, listing.id);
+    const data = await deleteDeleteListing(listing.id);
     if (data.error) {
       console.log(data.error);
     } else {
@@ -91,7 +90,7 @@ const HostedListingsCard = ({ listing, refresh }) => {
     };
     console.log(body)
     try {
-      const data = await putUpdateListingAvails(token, listing.id, body);
+      const data = await putUpdateListingAvails(listing.id, body);
       if (data.error) {
         console.log(data.error);
       } else {
