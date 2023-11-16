@@ -6,6 +6,7 @@ import Landing from './pages/Landing';
 import Register from './pages/Register';
 import HostedListings from './pages/HostedListings';
 import EditListing from './pages/EditListing';
+import ListingPage from './pages/ListingPage';
 
 import { Context, initialValue } from './helpers/context';
 
@@ -29,6 +30,7 @@ function App () {
             <Route path="/register" element={<Register />} />
             <Route path="/my-listings" element={<HostedListings />} />
             <Route path="/my-listings/:id" element={<EditListing />} />
+            <Route path="/:id" element={<ListingPage />} />
           </Routes>
         </Context.Provider>
       </BrowserRouter>
