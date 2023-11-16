@@ -5,10 +5,11 @@ import beds from '../assets/beds.svg';
 import bathroom from '../assets/bathroom.svg';
 import editIcon from '../assets/edit.svg';
 import deleteIcon from '../assets/trash.svg';
+import x from '../assets/x.svg';
 
 import Button from '../components/Button';
 import Input from '../components/Input';
-import x from '../assets/x.svg';
+import ErrorMessage from '../components/ErrorMessage';
 
 import { deleteDeleteListing, putUpdateListingAvails } from '../helpers/helpers';
 
@@ -20,6 +21,8 @@ const HostedListingsCard = ({ listing, refresh }) => {
   // const [availabilityDates, setAvailabilityDates] = useState([]);
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [dateRanges, setDateRanges] = useState([]);
+  const [error, setError] = React.useState('');
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -28,6 +31,36 @@ const HostedListingsCard = ({ listing, refresh }) => {
   const closeModal = () => {
     setIsModalOpen(false);
     refresh();
+  };
+
+  const addDateRange = async () => {
+    if (!selectedStartDate) {
+      setError('A valid start date is required in order to add availabilities to the listing');
+      return
+    }
+    if (!selectedEndDate) {
+      setError('A valid end date is required in order to add availabilities to the listing');
+      return
+    }
+    if (selectedStartDate && selectedEndDate) {
+      if (selectedStartDate < selectedEndDate) {
+        let newDateRanges = dateRanges
+        newDateRanges = [...newDateRanges, { start: selectedStartDate, end: selectedEndDate }];
+        setDateRanges(newDateRanges);
+        setSelectedStartDate('');
+        setSelectedEndDate('');
+        setError('');
+        console.log(newDateRanges);
+      } else {
+        setError('Start date is after end date');
+      }
+    }
+  };
+
+  const removeDateRange = (indexToRemove) => {
+    const updatedDateRanges = dateRanges.filter((_, index) => index !== indexToRemove);
+    setDateRanges(updatedDateRanges);
+    console.log(updatedDateRanges)
   };
 
   const deleteListing = async () => {
@@ -40,13 +73,11 @@ const HostedListingsCard = ({ listing, refresh }) => {
   };
 
   const addAvailability = () => {
-    if (selectedStartDate && selectedEndDate) {
-      console.log(selectedStartDate)
-      console.log(selectedEndDate)
-      const range = { start: selectedStartDate, end: selectedEndDate }
-      updateAvails(range);
-      setSelectedStartDate(null);
-      setSelectedEndDate(null);
+    if (dateRanges.length === 0) {
+      setError('No dates are currently added')
+    } else {
+      updateAvails();
+      setError('');
     }
   };
 
@@ -54,11 +85,9 @@ const HostedListingsCard = ({ listing, refresh }) => {
     return (listing.availability.length > 0)
   }
 
-  const updateAvails = async (range) => {
+  const updateAvails = async () => {
     const body = {
-      availability: [
-        range
-      ],
+      availability: dateRanges,
     };
     console.log(body)
     try {
@@ -138,7 +167,7 @@ const HostedListingsCard = ({ listing, refresh }) => {
             <div className='flex flex-row'>
               <div className='flex flex-1'/>
               <div className='flex justify-items-center items-center'>
-                <b className='text-center text-base'>Select Dates</b>
+                <b className='text-center text-base'>Select Date(s)</b>
               </div>
               <div className='flex flex-1 justify-end'>
                 <button
@@ -150,11 +179,26 @@ const HostedListingsCard = ({ listing, refresh }) => {
             </div>
             <hr/>
             <div className='grid grid-cols-2 gap-4'>
-                <Input id='Start Date (YYYY-MM-DD)' type='text' setId={setSelectedStartDate} />
-                <Input id='End Date (YYYY-MM-DD)' type='text' setId={setSelectedEndDate}/>
+                <Input id='Start Date' type='date' setId={setSelectedStartDate} />
+                <Input id='End Date' type='date' setId={setSelectedEndDate}/>
+            </div>
+            {error && <ErrorMessage message={error} />}
+            <Button label="Add Date" onClick={addDateRange} />
+            <hr className='my-1' />
+            <div className='grid grid-cols-2 gap-4'>
+              {dateRanges.map((dateRange, index) => (
+                <div key={index} className='flex flex-row justify-between'>
+                  <p className='flex flex-col'><b>Selected Date Range:</b> {dateRange.start} to {dateRange.end}</p>
+                  <button
+                  className='rounded-md p-2 bg-white text-[#FE375B] border border-[#FE375B] hover:bg-[#ffe1e6] transition-all duration-300'
+                  onClick={() => removeDateRange(index)}>
+                  <img src={deleteIcon} alt='Delete Icon' />
+                </button>
+                </div>
+              ))}
             </div>
             <hr className='my-1' />
-            <Button label="Add Availability" onClick={addAvailability} />
+            <Button label="Confirm Dates" onClick={addAvailability} />
           </div>
         </div>
       )}
