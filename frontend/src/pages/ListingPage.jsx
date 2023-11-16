@@ -91,8 +91,8 @@ const ListingPage = () => {
       <p>Amenities: { listingInfo.metadata.amenities }</p>
       <p>Images: { listingInfo.metadata.images }</p>
       <p>Reviews: { listingInfo.reviews }</p>
-      <p>Availability: { listingInfo.availability[0].start }</p>
-      <p>Availability: { listingInfo.availability[0].end }</p>
+      {/* <p>Availability: { listingInfo.availability[0].start }</p>
+      <p>Availability: { listingInfo.availability[0].end }</p> */}
       <p>Published: { listingInfo.published }</p>
       <p>Posted On: { listingInfo.postedOn }</p>
       <Button label='Reserve' onClick={reserveDate} />
