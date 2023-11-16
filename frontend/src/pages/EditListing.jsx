@@ -23,6 +23,7 @@ const EditListing = () => {
   const [amenities, setAmenities] = useState('');
   const [images, setImages] = useState([]);
   const [listingInfo, setListingInfo] = useState(null);
+  const [error, setError] = useState('');
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const EditListing = () => {
           setListingInfo(data.listing);
         }
       } catch (error) {
-        console.error('Error fetching listing information:', error);
+        console.log(error);
       }
     };
 
@@ -90,12 +91,12 @@ const EditListing = () => {
     try {
       const data = await putUpdateListing(token, id, body);
       if (data.error) {
-        console.log(data.error);
+        setError(data.error);
       } else {
         navigate('/my-listings/');
       }
     } catch (error) {
-      console.error('Error updating listing:', error);
+      console.log(error);
     }
   };
 
@@ -123,6 +124,11 @@ const EditListing = () => {
         <ImageUpload onImageUpload={setThumbnail} />
       </div>
       <hr className='my-1' />
+      {error && (
+        <div className='bg-red-100 px-4 py-2 text-sm rounded-md'>
+          <p className='text-red-500'>{error}</p>
+        </div>
+      )}
       <Button label='SAVE' onClick={handleUpdateListing} />
     </div>
   );
