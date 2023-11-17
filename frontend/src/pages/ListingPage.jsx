@@ -8,7 +8,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import house from '../assets/house.svg';
 import x from '../assets/x.svg';
 
-import { getListing, postNewBooking, getAllBookings } from '../helpers/helpers';
+import { getListing, postNewBooking, getAllBookings, putNewListingReview } from '../helpers/helpers';
 import { useContext, Context } from '../helpers/context';
 
 const ListingPage = () => {
@@ -18,9 +18,14 @@ const ListingPage = () => {
   const [reservedStartDate, setReservedStartDate] = useState(null);
   const [reservedEndDate, setReservedEndDate] = useState(null);
   const [isConfirmationScreenOpen, setIsConfirmationScreenOpen] = useState(false);
-  const [bookings, setBookings] = useState(null);
+  const [bookings, setBookings] = useState([]);
+  const [isCreateReviewOpen, setIsCreateReviewOpen] = useState(false);
+  const [rating, setRating] = useState(1);
+  const [reviewComment, setReviewComment] = useState('');
+  const [ifBookingAccepted, setIfBookingAccepted] = useState(false);
+  const [acceptedBookingId, setAcceptedBookingId] = useState(null);
   const { getters } = useContext(Context);
-  console.log(listingInfo);
+  // console.log(listingInfo);
   const { id } = useParams();
   // const navigate = useNavigate();
   const [error, setError] = React.useState('');
@@ -41,6 +46,16 @@ const ListingPage = () => {
 
   const closeConfirmationScreen = () => {
     setIsConfirmationScreenOpen(false);
+  };
+
+  const openCreateReview = () => {
+    setRating(1);
+    setIsCreateReviewOpen(true);
+  };
+
+  const closeCreateReview = () => {
+    setError('')
+    setIsCreateReviewOpen(false);
   };
 
   const openIfLogged = () => {
@@ -82,8 +97,6 @@ const ListingPage = () => {
     };
 
     allBookings();
-    console.log('checking bookings')
-    console.log(bookings)
   }, [id]);
 
   if (!listingInfo) {
@@ -98,6 +111,45 @@ const ListingPage = () => {
       openModal();
     }
   };
+
+  const addReview = async () => {
+    if (reviewComment === '') {
+      setError('A comment is required in order to make a review to the listing')
+      return
+    }
+    if (reviewComment === null) {
+      setError('A comment is required in order to make a review to the listing')
+      return
+    }
+    if (token === null) {
+      setError('Please log in before adding a review to this listing')
+    } else {
+      const newReview = { comment: reviewComment, rating };
+      const body = {
+        review: newReview,
+      };
+      console.log(body)
+      checkIfBookingAccepted();
+      if (ifBookingAccepted) {
+        putNewListingReview(id, acceptedBookingId, body)
+        setError('')
+        setReviewComment('');
+        setRating(1)
+        closeCreateReview();
+      } else {
+        setError('No reservations have been accepted yet')
+      }
+    }
+  }
+
+  const checkIfBookingAccepted = () => {
+    bookings.forEach((booking) => {
+      if (booking.listingId === id && booking.status === 'accepted') {
+        setIfBookingAccepted(true)
+        setAcceptedBookingId(booking.id)
+      }
+    })
+  }
 
   const addReservation = () => {
     if (!reservedStartDate) {
@@ -145,6 +197,10 @@ const ListingPage = () => {
     }
   };
 
+  const handleStarClick = (selectedRating) => {
+    setRating(selectedRating);
+  };
+
   return (
     <div className='flex flex-col items-center text-sm md:text-base'>
       <div className='flex flex-col mt-[64px] md:mt-[92px] w-4/5 lg:w-1/2 py-8 gap-4 md:gap-8'>
@@ -187,6 +243,16 @@ const ListingPage = () => {
         </div>
         {/* <p>Availability: { listingInfo.availability[0].start }</p>
         <p>Availability: { listingInfo.availability[0].end }</p> */}
+        <Button label="Write a Review" onClick={openCreateReview} />
+        <div className='grid grid-cols-4 gap-4'>
+          {bookings.map((booking, index) => (
+            <div key={index} className='flex flex-row justify-between'>
+              { booking.listingId === id
+                ? (<><p className='flex flex-col'><b>Booking:</b> {booking.dateRange.start} to {booking.dateRange.end}</p><p className='flex flex-col'><b>Status:</b> {booking.status}</p></>)
+                : ('') }
+            </div>
+          ))}
+        </div>
         {isModalOpen && (
           <div className='fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm'>
             <div className='flex flex-col px-6 py-4 w-[56rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm'>
@@ -249,6 +315,45 @@ const ListingPage = () => {
                 <p>Booking is now accepted, and is currently under review</p>
               </div>
               <Button label="Close" onClick={closeConfirmationScreen} />
+            </div>
+          </div>
+        )}
+        {isCreateReviewOpen && (
+          <div className='fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm'>
+            <div className='flex flex-col px-6 py-4 w-[56rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm'>
+              <div className='flex flex-row'>
+                <div className='flex flex-1'/>
+                <div className='flex justify-items-center items-center'>
+                  <b className='text-center text-base'>Write a Review</b>
+                </div>
+                <div className='flex flex-1 justify-end'>
+                  <button
+                    className='grid rounded-md w-6 h-6 bg-white text-[#FE375B] border border-[#FE375B] hover:bg-[#ffe1e6] place-items-center transition-all duration-300'
+                    onClick={closeCreateReview}>
+                    <img className='w-4/5 h-4/5' src={x} alt='Close Button' />
+                  </button>
+                </div>
+              </div>
+              <hr/>
+              <div className='grid grid-cols-1 gap-4'>
+                  <Input id='Comment' type='text' setId={setReviewComment} />
+                  <div className="flex items-center">
+                    {[1, 2, 3, 4, 5].map((index) => (
+                      <span
+                        key={index}
+                        className={`text-3xl cursor-pointer ${
+                          index <= rating ? 'text-yellow-500' : 'text-gray-300'
+                        }`}
+                        onClick={() => handleStarClick(index)}
+                      >
+                        &#9733;
+                      </span>
+                    ))}
+                  </div>
+              </div>
+              {error && <ErrorMessage message={error} />}
+              <hr className='my-1' />
+              <Button label="Publish Review" onClick={addReview} />
             </div>
           </div>
         )}
