@@ -3,6 +3,8 @@ import LandingCard from '../components/LandingCard';
 import search from '../assets/search.svg';
 import { getAllListings, getListing } from '../helpers/helpers';
 
+import '../helpers/responsive.css';
+
 const Landing = () => {
   const [listings, setListings] = useState([]);
   const [filteredListings, setFilteredListings] = useState([]);
@@ -161,109 +163,111 @@ const Landing = () => {
 
   return (
     <>
-      <div className='flex flex-col mt-[88px] px-20 py-8 gap-2'>
-        <div
-          ref={searchBarRef}
-          className={`flex flex-row w-full align-items-center justify-between self-center p-3 rounded-full border-2 border-black/10 bg-white ${isSearchBarFocused ? 'max-w-full hover:cursor-default' : 'max-w-xs hover:cursor-pointer'}`}
-          onClick={handleSearchBarFocus}
-        >
-          <div className={`flex flex-col grow justify-center px-4 ${isSearchBarFocused ? 'hidden' : 'flex'}`}>
-            <p className='text-black/50'>Search for your dream listing</p>
-          </div>
-          <div className={`flex-row grow ${isSearchBarFocused ? 'flex' : 'hidden'}`}>
-            <div className='flex flex-col grow justify-center px-4 border-r-2 w-2/5'>
-              <p className='font-bold'>Place/Location</p>
-              <input
-                type="text"
-                value={locationInputValue}
-                onChange={(e) => setLocationInputValue(e.target.value)}
-                onFocus={handleLocationOnFocus}
-                className='outline-none transition-all duration-500'
-                placeholder="Search for places/locations"
-              />
-            </div>
-            <div className='flex flex-col grow justify-center px-4 border-r-2 w-1/5'>
-              <p className='font-bold'>Availability</p>
-              <div className='flex flex-row gap-4'>
-                <input
-                  type={dateInputType}
-                  value={checkInDate}
-                  onChange={(e) => setCheckInDate(e.target.value)}
-                  onFocus={handleAvailabilityOnFocus}
-                  className='w-1/2 outline-none transition-all duration-500'
-                  placeholder="Add check-in date"
-                />
-                <input
-                  type={dateInputType}
-                  value={checkOutDate}
-                  onChange={(e) => setCheckOutDate(e.target.value)}
-                  onFocus={handleAvailabilityOnFocus}
-                  className='w-1/2 outline-none transition-all duration-500'
-                  placeholder="Add check-out date"
-                />
-              </div>
-            </div>
-            <div className='flex flex-col grow justify-center px-4 border-r-2 w-1/5'>
-              <p className='font-bold'>Price Per Night</p>
-              <div className='flex flex-row gap-2'>
-                <input
-                  type="number"
-                  value={minPrice}
-                  onChange={(e) => setMinPrice(e.target.value)}
-                  onFocus={handlePriceOnFocus}
-                  className='w-1/2 outline-none transition-all duration-500'
-                  placeholder="Add min price"
-                  pattern="[0-9]*"
-                />
-                <input
-                  type="number"
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(e.target.value)}
-                  onFocus={handlePriceOnFocus}
-                  className='w-1/2 outline-none transition-all duration-500'
-                  placeholder="Add max price"
-                />
-              </div>
-            </div>
-            <div className='flex flex-col justify-center px-4 w-1/5'>
-              <p className='font-bold'>Review</p>
-              <div className='flex flex-row gap-4'>
-                <div className='flex flex-row gap-2'>
-                  <input
-                    type="checkbox"
-                    checked={hiToLowReview}
-                    onChange={handleHiToLowReviewChange}
-                    className='transition-all duration-500'
-                  />
-                  <p>Highest to Lowest</p>
-                </div>
-                <div className='flex flex-row gap-2'>
-                  <input
-                    type="checkbox"
-                    checked={lowToHiReview}
-                    onChange={handleLowToHiReviewChange}
-                    className='transition-all duration-500'
-                  />
-                  <p>Lowest to Highest</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <button
-            className={`flex rounded-full p-3 bg-[#FE375B] text-white border border-[#FE375B] transition-all duration-500 ${isSearchBarFocused ? 'hover:bg-[#D52E49]' : 'hover:none'}`}
-            onClick={handleSearch}
+      <div className='flex flex-col items-center h-screen'>
+        <div className='flex flex-col mt-[64px] md:mt-[92px] w-4/5 py-8 gap-2'>
+          <div
+            ref={searchBarRef}
+            className={`flex flex-row w-full align-items-center justify-between self-center p-3 rounded-[2rem] 2xl:rounded-full border-2 border-black/10 bg-white ${isSearchBarFocused ? 'max-w-full hover:cursor-default' : 'max-w-xs hover:cursor-pointer'}`}
+            onClick={handleSearchBarFocus}
           >
-            <img src={search} alt="Search Icon" />
-          </button>
+            <div className={`flex flex-col grow justify-center px-4 ${isSearchBarFocused ? 'hidden' : 'flex'}`}>
+              <p className='text-black/50'>Search for your dream listing</p>
+            </div>
+            <div className={`flex-col 2xl:flex-row grow ${isSearchBarFocused ? 'flex' : 'hidden'}`}>
+              <div className='flex flex-col grow justify-center px-4 2xl:border-r-2 w-full 2xl:w-2/5'>
+                <p className='font-bold'>Place/Location</p>
+                <input
+                  type="text"
+                  value={locationInputValue}
+                  onChange={(e) => setLocationInputValue(e.target.value)}
+                  onFocus={handleLocationOnFocus}
+                  className='outline-none transition-all duration-500'
+                  placeholder="Search for places/locations"
+                />
+              </div>
+              <div className='flex flex-col grow justify-center px-4 2xl:border-r-2 w-full 2xl:w-1/5'>
+                <p className='font-bold'>Availability</p>
+                <div className='flex flex-col sm:flex-row sm:gap-2'>
+                  <input
+                    type={dateInputType}
+                    value={checkInDate}
+                    onChange={(e) => setCheckInDate(e.target.value)}
+                    onFocus={handleAvailabilityOnFocus}
+                    className='flex grow outline-none transition-all duration-500'
+                    placeholder="Check-in date"
+                  />
+                  <input
+                    type={dateInputType}
+                    value={checkOutDate}
+                    onChange={(e) => setCheckOutDate(e.target.value)}
+                    onFocus={handleAvailabilityOnFocus}
+                    className='flex grow outline-none transition-all duration-500'
+                    placeholder="Check-out date"
+                  />
+                </div>
+              </div>
+              <div className='flex flex-col grow justify-center px-4 2xl:border-r-2 w-full 2xl:w-1/5'>
+                <p className='font-bold'>Price Per Night ($)</p>
+                <div className='flex flex-col sm:flex-row sm:gap-2'>
+                  <input
+                    type="number"
+                    value={minPrice}
+                    onChange={(e) => setMinPrice(e.target.value)}
+                    onFocus={handlePriceOnFocus}
+                    className='w-1/2 outline-none transition-all duration-500'
+                    placeholder="Min price"
+                    pattern="[0-9]*"
+                  />
+                  <input
+                    type="number"
+                    value={maxPrice}
+                    onChange={(e) => setMaxPrice(e.target.value)}
+                    onFocus={handlePriceOnFocus}
+                    className='w-1/2 outline-none transition-all duration-500'
+                    placeholder="Max price"
+                  />
+                </div>
+              </div>
+              <div className='flex flex-col justify-center px-4 w-full 2xl:w-1/5'>
+                <p className='font-bold'>Review</p>
+                <div className='flex flex-row gap-4'>
+                  <div className='flex flex-row gap-2'>
+                    <input
+                      type="checkbox"
+                      checked={hiToLowReview}
+                      onChange={handleHiToLowReviewChange}
+                      className='transition-all duration-500'
+                    />
+                    <p>Descending</p>
+                  </div>
+                  <div className='flex flex-row gap-2'>
+                    <input
+                      type="checkbox"
+                      checked={lowToHiReview}
+                      onChange={handleLowToHiReviewChange}
+                      className='transition-all duration-500'
+                    />
+                    <p>Ascending</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              className={`flex rounded-full w-[50px] h-[50px] p-3 bg-[#FE375B] text-white border border-[#FE375B] transition-all duration-500 ${isSearchBarFocused ? 'hover:bg-[#D52E49]' : 'hover:none'}`}
+              onClick={handleSearch}
+            >
+              <img src={search} alt="Search Icon" />
+            </button>
+          </div>
+          </div>
+        <div className={`w-4/5 pb-8 ${searchButtonPressed ? 'flex' : 'hidden'}`}>
+          <p className='text-2xl font-bold'>Found {searchResults} {searchResults === 1 ? 'result' : 'results'}</p>
         </div>
+        <div className="w-4/5 grid gap-6 landing-responsive">
+          {filteredListings.map((listing) => (
+            <LandingCard key={listing.id} listing={listing} />
+          ))}
         </div>
-      <div className={`px-20 pb-8 ${searchButtonPressed ? 'flex' : 'hidden'}`}>
-        <p className='text-2xl font-bold'>Found {searchResults} {searchResults === 1 ? 'result' : 'results'}</p>
-      </div>
-      <div className="px-20 grid grid-cols-5 gap-6">
-        {filteredListings.map((listing) => (
-          <LandingCard key={listing.id} listing={listing} />
-        ))}
       </div>
     </>
   );

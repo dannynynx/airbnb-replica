@@ -8,7 +8,7 @@ const Input = ({ id, type, setId, value }) => {
       </p>
       <div className='flex flex-col'>
         <input
-          className='rounded-sm border border-black/25 px-2 py-1 text-sm'
+          className='rounded-sm border border-black/25 px-2 py-1 text-base md:text-lg'
           id={id}
           type={type}
           onChange={e => setId(e.target.value)}

@@ -39,6 +39,7 @@
     ]
   },
   "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "@testing-library/react": "^12.1.5",
     "eslint": "^8.26.0",
     "eslint-config-standard": "^17.0.0",

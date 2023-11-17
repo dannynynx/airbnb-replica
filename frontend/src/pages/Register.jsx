@@ -38,13 +38,15 @@ const Register = () => {
     <>
       <div className="relative">
         <div className="fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm">
-          <div className="flex flex-col px-6 py-4 w-[32rem] bg-white rounded-md gap-4 shadow-md animate-fade-in">
-            <b className='text-center text-lg'>Register</b>
+          <div className="flex flex-col px-4 py-4 m-4 w-full max-w-[48rem] bg-white rounded-md gap-4 shadow-md animate-fade-in  text-sm md:text-base">
+            <b className='text-center  text-base md:text-lg'>Register</b>
             <hr />
-            <Input id="Email" type="email" setId={setEmail} />
-            <Input id="Name" type="text" setId={setName} />
-            <Input id="Password" type="password" setId={setPassword} />
-            <Input id="Re-Enter Password" type="password" setId={setReenteredPassword} />
+            <div className='grid grid-cols-2 gap-4'>
+              <Input id="Email" type="email" setId={setEmail} />
+              <Input id="Name" type="text" setId={setName} />
+              <Input id="Password" type="password" setId={setPassword} />
+              <Input id="Re-Enter Password" type="password" setId={setReenteredPassword} />
+            </div>
             <hr className="my-1" />
             {error && <ErrorMessage message={error} />}
             <Button label="REGISTER" onClick={register} />

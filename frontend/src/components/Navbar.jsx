@@ -26,37 +26,39 @@ const Navbar = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 flex flex-row justify-between items-center text-sm px-20 py-6 border-2 border-b-black/10 bg-white z-40">
-      <Link to="/">
-        <img className="w-24" src={airbnbLogo} alt="Airbnb Logo" />
-      </Link>
-      <div className="flex flex-row gap-4 items-center">
-        {isLoggedIn()
-          ? (
-          <>
-            <div className='flex flex-col w-[38px]'>
-              <button
-                className='rounded-md p-2 bg-white text-[#FE375B] border border-[#FE375B] hover:bg-[#ffe1e6] transition-all duration-300'
-                onClick={() => navigate('/my-listings')}>
-                <img src={houseLogo} alt='Hosted Bookings Logo' />
-              </button>
-            </div>
-            <div className='flex flex-col w-24'>
-              <Button label="Logout" onClick={logout} />
-            </div>
-          </>
-            )
-          : (
-          <>
-            <div className='flex flex-col w-24'>
-              <WhiteButton label="Register" onClick={() => navigate('/register')} />
-            </div>
-            <div className='flex flex-col w-24'>
-              <Button label="Login" onClick={() => navigate('/login')} />
-            </div>
-          </>
-            )}
-      </div>
+    <div className='fixed top-0 left-0 right-0 border-2 border-b-black/10 bg-white z-40 grid place-items-center'>
+      <div className="flex flex-row justify-between items-center text-sm md:py-6 w-[95%] py-3">
+        <Link to="/">
+          <img className="w-24" src={airbnbLogo} alt="Airbnb Logo" />
+        </Link>
+        <div className="flex flex-row gap-4 items-center">
+          {isLoggedIn()
+            ? (
+            <>
+              <div className='flex flex-col w-[38px]'>
+                <button
+                  className='rounded-md p-2 bg-white text-[#FE375B] border border-[#FE375B] hover:bg-[#ffe1e6] transition-all duration-300'
+                  onClick={() => navigate('/my-listings')}>
+                  <img src={houseLogo} alt='Hosted Bookings Logo' />
+                </button>
+              </div>
+              <div className='flex flex-col w-24'>
+                <Button label="Logout" onClick={logout} />
+              </div>
+            </>
+              )
+            : (
+            <>
+              <div className='flex flex-col w-24'>
+                <WhiteButton label="Register" onClick={() => navigate('/register')} />
+              </div>
+              <div className='flex flex-col w-24'>
+                <Button label="Login" onClick={() => navigate('/login')} />
+              </div>
+            </>
+              )}
+        </div>
+    </div>
     </div>
   );
 }
