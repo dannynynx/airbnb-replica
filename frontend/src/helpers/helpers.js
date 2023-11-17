@@ -161,6 +161,23 @@ export const putUpdateListingAvails = async (listingId, body) => {
   }
 };
 
+export const putNewListingReview = async (listingId, bookingId, body) => {
+  try {
+    const response = await fetch(`http://localhost:${BACKEND_PORT}/listings/${listingId}/review/${bookingId}`, {
+      method: 'PUT',
+      body: JSON.stringify(body),
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // BOOKING
 export const getAllBookings = async () => {
   try {
