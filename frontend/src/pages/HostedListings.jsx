@@ -10,6 +10,8 @@ import x from '../assets/x.svg';
 import { postNewListing, getAllListings, getListing } from '../helpers/helpers';
 import { useContext, Context } from '../helpers/context';
 
+import '../helpers/responsive.css';
+
 const HostedListings = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -133,7 +135,6 @@ const HostedListings = () => {
         const userOwnedListingsWithData = await Promise.all(
           userOwnedListings.map(async (listing) => {
             const userOwnedListingData = await getListing(listing.id);
-            console.log(userOwnedListingData);
             const userOwnedListingWithId = { ...userOwnedListingData.listing, id: listing.id };
             return userOwnedListingWithId;
           })
@@ -146,69 +147,71 @@ const HostedListings = () => {
   };
 
   return (
-    <div className='flex flex-col mt-[88px] px-20 py-8 gap-8'>
-      <div className='flex flex-row justify-between'>
-        <b className='text-3xl'>Your Hosted Listings</b>
-        <div className='flex flex-col w-36'>
-          <Button label='+ Create Listing' onClick={openModal} />
-        </div>
-      </div>
-      <div className='grid grid-cols-2 gap-4'>
-        {listings.map((listing) => (
-          <HostedListingsCard
-            key={listing.id}
-            listing={listing}
-            refresh={allListings}
-          />
-        ))}
-      </div>
-      {isModalOpen && (
-        <div className='fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm'>
-          <div className='flex flex-col px-6 py-4 w-[56rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm'>
-            <div className='flex flex-row'>
-              <div className='flex flex-1'/>
-              <div className='flex justify-items-center items-center'>
-                <b className='text-center text-base'>Create Listing</b>
-              </div>
-              <div className='flex flex-1 justify-end'>
-                <button
-                  className='grid rounded-md w-6 h-6 bg-white text-[#FE375B] border border-[#FE375B] hover:bg-[#ffe1e6] place-items-center transition-all duration-300'
-                  onClick={closeModal}>
-                  <img className='w-4/5 h-4/5' src={x} alt='Close Button' />
-                </button>
-              </div>
-            </div>
-            <hr/>
-            <div className='grid grid-cols-2 gap-4'>
-              <Input id='Title' type='text' setId={setTitle} />
-              <Input id='Street' type='text' setId={setStreet} />
-              <Input id='Property Type' type='text' setId={setPropertyType} />
-              <Input id='City' type='text' setId={setCity} />
-              <Input id='Price (per night)' type='text' setId={setPrice} />
-              <Input id='State' type='text' setId={setState} />
-              <Input id='Amenities' type='text' setId={setAmenities} />
-              <Input id='Postcode' type='text' setId={setPostcode} />
-              <Input id='Bathroom(s)' type='text' setId={setBathrooms} />
-              <Input id='Country' type='text' setId={setCountry} />
-              <Input id='Bed(s)' type='text' setId={setBeds} />
-              <Input id='Bedroom(s)' type='text' setId={setBedrooms} />
-            </div>
-            <div className='flex flex-col pt-1'>
-              <p>
-                Thumbnail <span className="text-red-500">*</span>
-              </p>
-              <ImageUpload onImageUpload={setThumbnail} />
-            </div>
-            <hr className='my-1' />
-            {error && (
-              <div className='bg-red-100 px-4 py-2 text-sm rounded-md'>
-                <p className='text-red-500'>{error}</p>
-              </div>
-            )}
-            <Button label='CREATE' onClick={newListing} />
+    <div className='flex flex-col items-center h-screen'>
+      <div className='flex flex-col mt-[64px] md:mt-[92px] w-4/5 py-8 gap-8'>
+        <div className='flex flex-row justify-between items-center'>
+          <b className='text-lg md:text-xl'>Your Hosted Listings</b>
+          <div className='flex flex-col w-28'>
+            <Button label='+ Listing' onClick={openModal} />
           </div>
         </div>
-      )}
+        <div className='grid grid-cols-2 hosted-responsive gap-4'>
+          {listings.map((listing) => (
+            <HostedListingsCard
+              key={listing.id}
+              listing={listing}
+              refresh={allListings}
+            />
+          ))}
+        </div>
+        {isModalOpen && (
+          <div className='fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm'>
+            <div className='flex flex-col px-4 py-4 m-4 w-full max-w-[48rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm'>
+              <div className='flex flex-row'>
+                <div className='flex flex-1'/>
+                <div className='flex justify-items-center items-center'>
+                  <b className='text-center text-base'>Create Listing</b>
+                </div>
+                <div className='flex flex-1 justify-end'>
+                  <button
+                    className='grid rounded-md w-6 h-6 bg-white text-[#FE375B] border border-[#FE375B] hover:bg-[#ffe1e6] place-items-center transition-all duration-300'
+                    onClick={closeModal}>
+                    <img className='w-4/5 h-4/5' src={x} alt='Close Button' />
+                  </button>
+                </div>
+              </div>
+              <hr/>
+              <div className='grid grid-cols-2 gap-4'>
+                <Input id='Title' type='text' setId={setTitle} />
+                <Input id='Street' type='text' setId={setStreet} />
+                <Input id='Property Type' type='text' setId={setPropertyType} />
+                <Input id='City' type='text' setId={setCity} />
+                <Input id='Price (per night)' type='text' setId={setPrice} />
+                <Input id='State' type='text' setId={setState} />
+                <Input id='Amenities' type='text' setId={setAmenities} />
+                <Input id='Postcode' type='text' setId={setPostcode} />
+                <Input id='Bathroom(s)' type='text' setId={setBathrooms} />
+                <Input id='Country' type='text' setId={setCountry} />
+                <Input id='Bed(s)' type='text' setId={setBeds} />
+                <Input id='Bedroom(s)' type='text' setId={setBedrooms} />
+              </div>
+              <div className='flex flex-col pt-1'>
+                <p>
+                  Thumbnail <span className="text-red-500">*</span>
+                </p>
+                <ImageUpload onImageUpload={setThumbnail} />
+              </div>
+              <hr className='my-1' />
+              {error && (
+                <div className='bg-red-100 px-4 py-2 text-sm rounded-md'>
+                  <p className='text-red-500'>{error}</p>
+                </div>
+              )}
+              <Button label='CREATE' onClick={newListing} />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

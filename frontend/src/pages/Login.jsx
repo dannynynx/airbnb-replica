@@ -31,8 +31,8 @@ const Login = () => {
     <>
       <div className="relative">
         <div className="fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm">
-          <div className="flex flex-col px-6 py-4 w-[32rem] bg-white rounded-md gap-4 shadow-md animate-fade-in text-sm">
-            <b className='text-center text-base'>Login</b>
+          <div className="flex flex-col px-4 py-4 m-4 w-full max-w-[48rem] bg-white rounded-md gap-4 shadow-md animate-fade-in text-sm md:text-base">
+            <b className='text-center text-base md:text-lg'>Login</b>
             <hr />
             <Input id="Email" type="email" setId={setEmail} />
             <Input id="Password" type="password" setId={setPassword} />

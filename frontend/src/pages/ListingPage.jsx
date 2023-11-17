@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 import ErrorMessage from '../components/ErrorMessage';
 
+import house from '../assets/house.svg';
 import x from '../assets/x.svg';
 
 import { getListing, postNewBooking, getAllBookings } from '../helpers/helpers';
@@ -145,94 +146,113 @@ const ListingPage = () => {
   };
 
   return (
-    <div className='flex flex-col mt-[88px] px-20 py-8 gap-2'>
-      <p>ID: { id }</p>
-      <p>Title: { listingInfo.title }</p>
-      <p>Owner: { listingInfo.owner }</p>
-      <p>Street: { listingInfo.address.street }</p>
-      <p>City: { listingInfo.address.city }</p>
-      <p>State: { listingInfo.address.state }</p>
-      <p>Postcode: { listingInfo.address.postcode }</p>
-      <p>Country: { listingInfo.address.country }</p>
-      <p>Price: { listingInfo.price }</p>
-      <p>Thumbnail: { listingInfo.thumbnail }</p>
-      <p>Property Type: { listingInfo.metadata.propertyType }</p>
-      <p>Bathrooms: { listingInfo.metadata.bathrooms }</p>
-      <p>Beds: { listingInfo.metadata.beds }</p>
-      <p>Bedrooms: { listingInfo.metadata.bedrooms }</p>
-      <p>Amenities: { listingInfo.metadata.amenities }</p>
-      <p>Images: { listingInfo.metadata.images }</p>
-      <p>Reviews: { listingInfo.reviews }</p>
-      {/* <p>Availability: { listingInfo.availability[0].start }</p>
-      <p>Availability: { listingInfo.availability[0].end }</p> */}
-      <p>Published: { listingInfo.published }</p>
-      <p>Posted On: { listingInfo.postedOn }</p>
-      <Button label='Reserve' onClick={reserveDate} />
-      {isModalOpen && (
-        <div className='fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm'>
-          <div className='flex flex-col px-6 py-4 w-[56rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm'>
-            <div className='flex flex-row'>
-              <div className='flex flex-1'/>
-              <div className='flex justify-items-center items-center'>
-                <b className='text-center text-base'>Select Reservation Dates</b>
+    <div className='flex flex-col items-center text-sm md:text-base'>
+      <div className='flex flex-col mt-[64px] md:mt-[92px] w-4/5 lg:w-1/2 py-8 gap-4 md:gap-8'>
+        <p className='text-lg md:text-xl font-bold'>{listingInfo.title}</p>
+        <div className="w-full rounded-md overflow-hidden">
+          <img
+            src={listingInfo.thumbnail}
+            alt={`Listing ${id} Thumbnail`}
+            className='object-cover w-full h-[20rem]'
+          />
+        </div>
+        <div className='flex flex-row gap-4 md:gap-8'>
+          <div className='flex flex-col w-3/5 gap-4 md:gap-8'>
+            <div className='flex flex-col gap-2'>
+              <div className='flex flex-row gap-2 items-center'>
+                <img src={house} alt="House Logo" />
+                <p className='text-lg md:text-xl font-bold'>{listingInfo.metadata.propertyType} in {listingInfo.address.city}, {listingInfo.address.country}</p>
               </div>
-              <div className='flex flex-1 justify-end'>
-                <button
-                  className='grid rounded-md w-6 h-6 bg-white text-[#FE375B] border border-[#FE375B] hover:bg-[#ffe1e6] place-items-center transition-all duration-300'
-                  onClick={closeModal}>
-                  <img className='w-4/5 h-4/5' src={x} alt='Close Button' />
-                </button>
+              <p>{ listingInfo.metadata.bedrooms } bedrooms · { listingInfo.metadata.beds } beds · { listingInfo.metadata.bathrooms } Bathrooms</p>
+              <p>Owned by { listingInfo.owner }</p>
+            </div>
+            <div className='grid grid-cols-2 justify-items-center w-full gap-4 p-4 border rounded-md border-[#FE375B]/50'>
+              <p><b className='text-lg md:text-xl'>5</b> ({ listingInfo.reviews.length })</p>
+              <p><b className='text-lg md:text-xl'>{ listingInfo.reviews.length }</b> reviews</p>
+            </div>
+            <div className='flex flex-col gap-2'>
+              <p className='text-lg md:text-xl font-bold'>Amenities</p>
+              <p>{ listingInfo.metadata.amenities }</p>
+            </div>
+          </div>
+          <div className='grow'>
+            <div className='flex flex-col w-full gap-4 p-4 border rounded-md shadow-md '>
+              <div className='flex flex-row flex-wrap items-center'>
+                <b className='text-lg md:text-xl pr-2'>${listingInfo.price}</b>
+                <p className='text-black/75'>per night</p>
               </div>
+              <Button label='Reserve' onClick={reserveDate} />
             </div>
-            <hr/>
-            <div className='grid grid-cols-2 gap-4'>
-                <Input id='Start Date' type='date' setId={setReservedStartDate} />
-                <Input id='End Date' type='date' setId={setReservedEndDate}/>
-            </div>
-            {error && <ErrorMessage message={error} />}
-            <hr className='my-1' />
-            <Button label="Add Reservation" onClick={addReservation} />
           </div>
         </div>
-      )}
-      {isIfLoggedOpen && (
-        <div className='fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm'>
-          <div className='flex flex-col px-6 py-4 w-[56rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm'>
-            <div className='flex flex-row'>
-              <div className='flex flex-1'/>
-              <div className='flex justify-items-center items-center'>
-                <b className='text-center text-base'>Please Log-in before reserving</b>
+        {/* <p>Availability: { listingInfo.availability[0].start }</p>
+        <p>Availability: { listingInfo.availability[0].end }</p> */}
+        {isModalOpen && (
+          <div className='fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm'>
+            <div className='flex flex-col px-6 py-4 w-[56rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm'>
+              <div className='flex flex-row'>
+                <div className='flex flex-1'/>
+                <div className='flex justify-items-center items-center'>
+                  <b className='text-center text-base'>Select Reservation Dates</b>
+                </div>
+                <div className='flex flex-1 justify-end'>
+                  <button
+                    className='grid rounded-md w-6 h-6 bg-white text-[#FE375B] border border-[#FE375B] hover:bg-[#ffe1e6] place-items-center transition-all duration-300'
+                    onClick={closeModal}>
+                    <img className='w-4/5 h-4/5' src={x} alt='Close Button' />
+                  </button>
+                </div>
               </div>
-              <div className='flex flex-1 justify-end'>
+              <hr/>
+              <div className='grid grid-cols-2 gap-4'>
+                  <Input id='Start Date' type='date' setId={setReservedStartDate} />
+                  <Input id='End Date' type='date' setId={setReservedEndDate}/>
               </div>
+              {error && <ErrorMessage message={error} />}
+              <hr className='my-1' />
+              <Button label="Add Reservation" onClick={addReservation} />
             </div>
-            <Button label="Close" onClick={closeIfLogged} />
           </div>
-        </div>
-      )}
-      {isConfirmationScreenOpen && (
-        <div className='fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm'>
-          <div className='flex flex-col px-6 py-4 w-[56rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm'>
-            <div className='flex flex-row'>
-              <div className='flex flex-1'/>
-              <div className='flex justify-items-center items-center'>
-                <b className='text-center text-base'>Booking Complete</b>
+        )}
+        {isIfLoggedOpen && (
+          <div className='fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm'>
+            <div className='flex flex-col px-6 py-4 w-[56rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm'>
+              <div className='flex flex-row'>
+                <div className='flex flex-1'/>
+                <div className='flex justify-items-center items-center'>
+                  <b className='text-center text-base'>Please Log-in before reserving</b>
+                </div>
+                <div className='flex flex-1 justify-end'>
+                </div>
               </div>
-              <div className='flex flex-1 justify-end'>
-                <button
-                  className='grid rounded-md w-6 h-6 bg-white text-[#FE375B] border border-[#FE375B] hover:bg-[#ffe1e6] place-items-center transition-all duration-300'
-                  onClick={closeConfirmationScreen}>
-                  <img className='w-4/5 h-4/5' src={x} alt='Close Button' />
-                </button>
-              </div>
+              <Button label="Close" onClick={closeIfLogged} />
             </div>
-            <div className='grid grid-cols-2 gap-4'>
-              <p>Booking is now accepted, and is currently under review</p>
-            </div>
-            <Button label="Close" onClick={closeConfirmationScreen} />
           </div>
-        </div>
-      )}
+        )}
+        {isConfirmationScreenOpen && (
+          <div className='fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm'>
+            <div className='flex flex-col px-6 py-4 w-[56rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm'>
+              <div className='flex flex-row'>
+                <div className='flex flex-1'/>
+                <div className='flex justify-items-center items-center'>
+                  <b className='text-center text-base'>Booking Complete</b>
+                </div>
+                <div className='flex flex-1 justify-end'>
+                  <button
+                    className='grid rounded-md w-6 h-6 bg-white text-[#FE375B] border border-[#FE375B] hover:bg-[#ffe1e6] place-items-center transition-all duration-300'
+                    onClick={closeConfirmationScreen}>
+                    <img className='w-4/5 h-4/5' src={x} alt='Close Button' />
+                  </button>
+                </div>
+              </div>
+              <div className='grid grid-cols-2 gap-4'>
+                <p>Booking is now accepted, and is currently under review</p>
+              </div>
+              <Button label="Close" onClick={closeConfirmationScreen} />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

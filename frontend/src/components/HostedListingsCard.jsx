@@ -102,16 +102,16 @@ const HostedListingsCard = ({ listing, refresh }) => {
   };
 
   return (
-    <div className='flex flex-row border-2 border-black/10 p-4 gap-4 rounded-lg items-center'>
+    <div className='flex flex-col md:flex-row border-2 border-black/10 p-4 gap-4 rounded-lg items-center'>
       <img
         src={listing.thumbnail}
         alt={`${listing.title} Thumbnail`}
-        className='rounded-md object-cover w-[21rem] h-[14rem] mr-2'
+        className='rounded-md object-cover w-full h-[18rem] mr-2'
       />
-      <div className='flex flex-col gap-4 grow justify-center'>
-        <div className='flex flex-row justify-between'>
+      <div className='flex flex-col w-full gap-4 grow justify-center'>
+        <div className='flex flex-row justify-between gap-2'>
           <div className='flex flex-col'>
-            <h2 className='text-2xl font-bold'>{listing.title}</h2>
+            <h2 className='text-xl font-bold'>{listing.title}</h2>
             <i>{listing.metadata.propertyType}</i>
           </div>
           <div className='flex flex-row gap-2'>
@@ -147,13 +147,13 @@ const HostedListingsCard = ({ listing, refresh }) => {
           </div>
         </div>
         <div className='flex flex-row items-center gap-2'>
-          <b className='text-2xl'>${listing.price}</b>
-          <p className='text-black/75'>AUD per night</p>
+          <b className='text-xl'>${listing.price}</b>
+          <p className='text-black/75'> per night</p>
         </div>
         <button
           className={`rounded-md py-2 px-4 ${
             isLive() ? 'bg-white text-[#FE375B] border border-[#FE375B] pointer-events-none' : 'bg-[#FE375B] text-white border border-[#FE375B] hover:bg-[#D52E49]'
-          } transition-all duration-300 font-bold text-sm`}
+          } transition-all duration-300 font-bold text-sm md:text-base`}
           type='button'
           onClick={openModal}
         >
@@ -162,11 +162,11 @@ const HostedListingsCard = ({ listing, refresh }) => {
       </div>
       {isModalOpen && (
         <div className='fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm'>
-          <div className='flex flex-col px-6 py-4 w-[56rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm'>
+          <div className='flex flex-col px-4 py-4 m-4 w-full max-w-[48rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm md:text-base'>
             <div className='flex flex-row'>
               <div className='flex flex-1'/>
               <div className='flex justify-items-center items-center'>
-                <b className='text-center text-base'>Select Date(s)</b>
+                <b className='text-center text-base md:text-lg'>Select Date(s)</b>
               </div>
               <div className='flex flex-1 justify-end'>
                 <button
@@ -176,7 +176,7 @@ const HostedListingsCard = ({ listing, refresh }) => {
                 </button>
               </div>
             </div>
-            <hr/>
+            <hr className="my-1" />
             <div className='grid grid-cols-2 gap-4'>
                 <Input id='Start Date' type='date' setId={setSelectedStartDate} />
                 <Input id='End Date' type='date' setId={setSelectedEndDate}/>
