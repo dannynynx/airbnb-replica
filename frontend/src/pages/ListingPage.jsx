@@ -222,16 +222,19 @@ const ListingPage = () => {
               <p>{ listingInfo.metadata.bedrooms } bedrooms · { listingInfo.metadata.beds } beds · { listingInfo.metadata.bathrooms } Bathrooms</p>
               <p>Owned by { listingInfo.owner }</p>
             </div>
-            <div className='grid grid-cols-2 justify-items-center w-full gap-4 p-4 border rounded-md border-[#FE375B]/50'>
-              <p><b className='text-lg md:text-xl'>5</b> ({ listingInfo.reviews.length })</p>
-              <p><b className='text-lg md:text-xl'>{ listingInfo.reviews.length }</b> reviews</p>
+            <div className='flex flex-col gap-2'>
+              <div className='grid grid-cols-2 justify-items-center w-full gap-4 p-4 border rounded-md border-[#FE375B]/50'>
+                <p><b className='text-lg md:text-xl'>5</b> ({ listingInfo.reviews.length })</p>
+                <p><b className='text-lg md:text-xl'>{ listingInfo.reviews.length }</b> reviews</p>
+              </div>
+              <Button label="Write a Review" onClick={openCreateReview} />
             </div>
             <div className='flex flex-col gap-2'>
               <p className='text-lg md:text-xl font-bold'>Amenities</p>
               <p>{ listingInfo.metadata.amenities }</p>
             </div>
           </div>
-          <div className='grow'>
+          <div className='flex flex-col grow gap-4'>
             <div className='flex flex-col w-full gap-4 p-4 border rounded-md shadow-md '>
               <div className='flex flex-row flex-wrap items-center'>
                 <b className='text-lg md:text-xl pr-2'>${listingInfo.price}</b>
@@ -239,20 +242,19 @@ const ListingPage = () => {
               </div>
               <Button label='Reserve' onClick={reserveDate} />
             </div>
+            <div className='flex flex-col gap-2'>
+              {bookings.map((booking, index) => (
+                <div key={index} className='flex flex-row justify-between'>
+                  { booking.listingId === id
+                    ? (<><p className='flex flex-col'><b>Booking:</b> {booking.dateRange.start} to {booking.dateRange.end}</p><p className='flex flex-col'><b>Status:</b> {booking.status}</p></>)
+                    : ('') }
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         {/* <p>Availability: { listingInfo.availability[0].start }</p>
         <p>Availability: { listingInfo.availability[0].end }</p> */}
-        <Button label="Write a Review" onClick={openCreateReview} />
-        <div className='grid grid-cols-4 gap-4'>
-          {bookings.map((booking, index) => (
-            <div key={index} className='flex flex-row justify-between'>
-              { booking.listingId === id
-                ? (<><p className='flex flex-col'><b>Booking:</b> {booking.dateRange.start} to {booking.dateRange.end}</p><p className='flex flex-col'><b>Status:</b> {booking.status}</p></>)
-                : ('') }
-            </div>
-          ))}
-        </div>
         {isModalOpen && (
           <div className='fixed inset-0 flex justify-center items-center z-30 bg-black/20 backdrop-blur-sm'>
             <div className='flex flex-col px-6 py-4 w-[56rem] bg-white rounded-md gap-2 shadow-md animate-fade-in text-sm'>
@@ -342,7 +344,7 @@ const ListingPage = () => {
                       <span
                         key={index}
                         className={`text-3xl cursor-pointer ${
-                          index <= rating ? 'text-yellow-500' : 'text-gray-300'
+                          index <= rating ? 'text-[#FE375B]' : 'text-gray-300'
                         }`}
                         onClick={() => handleStarClick(index)}
                       >
