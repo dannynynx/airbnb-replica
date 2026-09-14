@@ -1,12 +1,13 @@
 {
   "name": "express-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "server.js",
   "scripts": {
     "test": "jest test/*",
     "lint": "eslint src/*.js",
-    "start": "nodemon -r esm src/server.js --ignore database.json",
+    "start": "nodemon src/server.js --ignore database.json",
     "reset": "npx rimraf database.json"
   },
   "author": "",

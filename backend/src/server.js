@@ -5,8 +5,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 
-import { InputError, AccessError } from './error';
-import swaggerDocument from '../swagger.json';
+import { InputError, AccessError } from './error.js';
+//import swaggerDocument from '../swagger.json';
 import {
   getEmailFromAuthorization,
   login,
@@ -28,9 +28,10 @@ import {
   removeBooking,
   acceptBooking,
   declineBooking,
-} from './service';
+} from './service.js';
 
 const app = express();
+const swaggerDocument = JSON.parse(fs.readFileSync('./swagger.json'));
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
